@@ -2,7 +2,7 @@ import unittest
 import time
 from selenium import webdriver 
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
@@ -46,6 +46,29 @@ class TestLoginRegister(unittest.TestCase):
 
         response_massage= driver.find_element(By.CSS_SELECTOR,"#login_button_container > div > form > div.error-message-container.error > h3").text
         self.assertEqual(response_massage,'Epic sadface: Username and password do not match any user in this service')
+
+    def test_dropdown(self): 
+        driver = self.driver
+        driver.get("https://www.saucedemo.com") 
+        driver.maximize_window()
+        time.sleep(3)
+        driver.find_element(By.ID,"user-name").send_keys("standard_user")
+        time.sleep(1)
+        driver.find_element(By.ID,"password").send_keys("secret_sauce")
+        time.sleep(1)
+        driver.find_element(By.ID,"login-button").click()
+
+        response_massage= driver.find_element(By.CSS_SELECTOR,"#header_container > div.header_secondary_container > span").text
+        self.assertEqual(response_massage,'PRODUCTS')
+
+        driver.find_element(By.CSS_SELECTOR,"#header_container > div.header_secondary_container > div.right_component > span > select").click()
+        time.sleep(2)
+        driver.find_element(By.CSS_SELECTOR,"#header_container > div.header_secondary_container > div.right_component > span > select > option:nth-child(2)").click()
+        time.sleep(5)
+        driver.find_element(By.CSS_SELECTOR,"#header_container > div.header_secondary_container > div.right_component > span > select > option:nth-child(3)").click()
+        time.sleep(5)
+        driver.find_element(By.CSS_SELECTOR,"#header_container > div.header_secondary_container > div.right_component > span > select > option:nth-child(4)").click()
+        time.sleep(5)
 
 
 unittest.main()
